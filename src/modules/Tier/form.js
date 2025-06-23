@@ -2,23 +2,20 @@ import React, {  useEffect, useState, useRef } from 'react';
 import {
   Form,
   Input,
-  Select,
   Button,
   notification,
   Switch
 } from 'antd';
 import { postData, putData } from '@zeep/zustand/common/api';
 import sideBarStore from '@zeep/zustand/app/sidebar';
-const { Option } = Select;
 
 export default function  CreateTier( { cancelAction } ) {
   const [form] = Form.useForm();
-  const { validateFields, getFieldValue, setFieldsValue } = form;
+  const { validateFields, setFieldsValue } = form;
   const { post_loading, postRequest } = postData();
   const { put_loading, putRequest } = putData();
   const { rerenderDetails } = sideBarStore();
   const [ flag, setFlag ] = useState(false)
-  const [ confirm_dirty, setConfirmDirty ] = useState(false)
   const [ tier_details, setTierDetails ] = useState(JSON.parse((localStorage.getItem('view_tier'))))
 
   const firstTimeRender = useRef(true);
@@ -36,8 +33,8 @@ export default function  CreateTier( { cancelAction } ) {
             is_default_tier: tier.is_default_tier
           })
         } else {
-          setTierDetails({})
-          setFieldsValue({})
+          setTierDetails({});
+          setTimeout(() => form.resetFields(), 0);
         }
         setFlag(!flag)
       }
@@ -121,26 +118,6 @@ export default function  CreateTier( { cancelAction } ) {
       })
     }    
   }
-
-  const handleConfirmBlur = e => {
-    const { value } = e.target;
-    setConfirmDirty(confirm_dirty || !!value);
-  };
-
-  const compareToFirstPassword = (rule, value, callback) => {
-    if (value && value !== getFieldValue('password')) {
-      return Promise.reject('Two passwords that you enter is inconsistent!');
-    } else {
-      return Promise.resolve();
-    }
-  };
-
-  const validateToNextPassword = (rule, value, callback) => {
-    if (value && confirm_dirty) {
-      validateFields(['confirm'], { force: true });
-    }
-    return Promise.resolve();
-  };
 
     const formItemLayout = {
       labelCol: {

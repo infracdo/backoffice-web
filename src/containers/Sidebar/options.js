@@ -13,8 +13,8 @@ const options = [
 		roles: ["admin","support"],
 	},
 	{
-		key: 'subcriber',
-		label: 'Subcribers',
+		key: 'subscriber',
+		label: 'Subscribers',
 		leftIcon: 'ion-person-stalker',
 		roles: ["admin","support"],
 	},

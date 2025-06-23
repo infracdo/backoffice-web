@@ -149,7 +149,7 @@ export function sortOptions(list) {
 }
 
 export function formatKilobytes(kb) {
-  if (kb === 0) return "0 KB";
+  if (kb === 0 || !kb) return "0 KB";
 
   const units = ["KB", "MB", "GB", "TB"];
   const k = 1024;

@@ -7,7 +7,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import CreateTier from './form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
-import { tierTable } from  "@zeep/containers/Tables/commonTable/config";
+import { tableinfo } from "./config/list-config";
 import { getData, downloadData } from '@zeep/zustand/common/api';
 import sideBarStore from '@zeep/zustand/app/sidebar';
 import { formatKilobytes } from '@zeep/lib/helpers/utility'
@@ -54,7 +54,7 @@ export default function TiersPage () {
         setTiers([]);
       }
     });
-  }, [search, getRequest]);
+  }, [search, getRequest]);  // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const download = () => {    
@@ -129,7 +129,7 @@ export default function TiersPage () {
                 </Row>
                 <Col md={24}>
                   <commonTableViews.IsoSimpleTable 
-                    tableInfo={tierTable}
+                    tableInfo={tableinfo}
                     dataList={tiers}
                     />
                 </Col>
@@ -146,7 +146,7 @@ export default function TiersPage () {
             onOk={handleOk}
             onCancel={handleCancel}
             footer={null}>
-            <CreateTier cancelAction={toggleUpdateModal} />
+            <CreateTier cancelAction={handleCancel} />
           </Modal>
           <Modal
             destroyOnClosedestroyOnClose={true}

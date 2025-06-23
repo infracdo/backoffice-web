@@ -2,21 +2,18 @@ import React, {  useEffect, useState, useRef } from 'react';
 import {
   Form,
   Input,
-  Select,
   Button,
   notification,
   Switch
 } from 'antd';
 import { putData } from '@zeep/zustand/common/api';
 import sideBarStore from '@zeep/zustand/app/sidebar';
-const { Option } = Select;
 
 export default function  ViewRouterPage( { cancelAction }) {
   const [form] = Form.useForm();
   const { validateFields, setFieldsValue } = form;
   const { put_loading, putRequest } = putData();
   const { rerenderDetails } = sideBarStore();
-  const [ flag, setFlag ] = useState(false)
   const [ router_details, setRouterDetails ] = useState(JSON.parse((localStorage.getItem('view_router'))))
 
   const firstTimeRender = useRef(true);
@@ -42,14 +39,12 @@ export default function  ViewRouterPage( { cancelAction }) {
           setRouterDetails({})
           setFieldsValue({})
         }
-        setFlag(!flag)
       }
-    }, [rerenderDetails]) 
+    }, [rerenderDetails]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { 
     firstTimeRender.current = false ;
     setRouterDetails( JSON.parse( localStorage.getItem('view_router') ))
-    setFlag(!flag)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   
   const handleSubmit = () => {
@@ -176,7 +171,7 @@ export default function  ViewRouterPage( { cancelAction }) {
               >
               <Input readOnly/>
             </Form.Item>
-            <Form.Item label="Is Enabled"
+            <Form.Item label="Enabled"
               name="is_enabled"
               valuePropName="checked"
               >

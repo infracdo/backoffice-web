@@ -9,6 +9,18 @@ const routes = [
     exact:true
   },
   {
+    path: "business_owner",
+    component: lazy(() => import("@zeep/modules/BusinessOwner/list"))
+  },
+  {
+    path: "subscriber",
+    component: lazy(() => import("@zeep/modules/Subscriber/list"))
+  },
+  {
+    path: "otp",
+    component: lazy(() => import("@zeep/modules/Otp/list"))
+  },
+  {
     path: "router",
     component: lazy(() => import("@zeep/modules/Router/list"))
   },

@@ -61,7 +61,7 @@ const postData = create((set) => ({
             ...getHeaders()
         }
       )
-      set({ ... response.data, post_loading: false });
+      set({ ...response.data, post_loading: false });
       return response
     } catch (error) {
       set({ error, post_loading: false });

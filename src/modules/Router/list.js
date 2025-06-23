@@ -6,9 +6,9 @@ import { Button, Modal, Spin, Col,
 import { DownloadOutlined } from '@ant-design/icons';
 import ViewEouter from './form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
-import { routerTable } from  "@zeep/containers/Tables/commonTable/config";
+import { tableinfo } from "./config/list-config";
 import { getData, downloadData } from '@zeep/zustand/common/api';
-import { formatKilobytes } from '@zeep/lib/helpers/utility'
+import { formatKilobytes, valueType } from '@zeep/lib/helpers/utility'
 import sideBarStore from '@zeep/zustand/app/sidebar';
 const { Title } = Typography;
 const { Search } = Input;
@@ -43,8 +43,6 @@ export default function RoutersPage () {
           ...el,
           key: el.router_id,
           gps_location: `(${el.lat}, ${el.long})`,
-          subscribers_count: el.subscribers_count || 0,
-          data_usage: el.data_usage || 0,
           status: el.is_enabled? 'Enabled': 'Disabled',
           action: (
             <Button type="link" className="isoInvoPrint"
@@ -68,7 +66,7 @@ export default function RoutersPage () {
         setTotalSubscribers(0);
       }
     });
-  }, [search, page, limit, getRequest]);
+  }, [search, page, limit, getRequest]);  // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const download = () => {    
@@ -115,7 +113,11 @@ export default function RoutersPage () {
                       <div className="boxContent">
                         <Col style={{display:"inline-flex"}}>
                           <h3 className="right-space">TOTAL ROUTERS:</h3>
-                          <h3 className="figure">{total_rows}</h3>
+                          <h3 className="figure">{valueType(
+                              total_rows
+                                ? total_rows
+                                : 0
+                            )}</h3>
                         </Col>
                       </div>
                       </Box>
@@ -135,7 +137,11 @@ export default function RoutersPage () {
                       <div className="boxContent">
                         <Col style={{display:"inline-flex"}}>
                           <h3 className="right-space">TOTAL SUBSCRIBERS:</h3>
-                          <h3 className="figure">{total_subscribes}</h3>
+                          <h3 className="figure">{valueType(
+                              total_subscribes
+                                ? total_subscribes
+                                : 0
+                            )}</h3>
                           </Col>
                       </div>
                       </Box>
@@ -161,7 +167,7 @@ export default function RoutersPage () {
                 </Row>
                 <Col md={24}>
                   <commonTableViews.IsoSimpleTable 
-                    tableInfo={routerTable}
+                    tableInfo={tableinfo}
                     dataList={routers}
                     />
                    <Pagination

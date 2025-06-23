@@ -37,8 +37,8 @@ export default function  CreateUserPage( { cancelAction } ) {
             is_active: user.is_active
           })
         } else {
-          setUserDetails({})
-          setFieldsValue({})
+          setUserDetails({});
+          setTimeout(() => form.resetFields(), 0);
         }
         setFlag(!flag)
       }
@@ -249,7 +249,7 @@ export default function  CreateUserPage( { cancelAction } ) {
                 <Option value="support">Support</Option>
               </Select>
             </Form.Item>
-            <Form.Item label="Is Activated"
+            <Form.Item label="Activated"
               name="is_active"
               valuePropName="checked"
               >

@@ -7,7 +7,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import CreateUser from './form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
-import { userTable } from  "@zeep/containers/Tables/commonTable/config";
+import { tableinfo } from "./config/list-config";
 import { getData, downloadData } from '@zeep/zustand/common/api';
 import sideBarStore from '@zeep/zustand/app/sidebar';
 const { Title } = Typography;
@@ -53,7 +53,7 @@ export default function UsersPage () {
         setUsers([]);
       }
     });
-  }, [search, getRequest]);
+  }, [search, getRequest]);  // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const download = () => {    
@@ -129,7 +129,7 @@ export default function UsersPage () {
                 </Row>
                 <Col md={24}>
                   <commonTableViews.IsoSimpleTable 
-                    tableInfo={userTable}
+                    tableInfo={tableinfo}
                     dataList={users}
                     />
                 </Col>
@@ -146,7 +146,7 @@ export default function UsersPage () {
             onOk={handleOk}
             onCancel={handleCancel}
             footer={null}>
-            <CreateUser cancelAction={toggleUpdateModal} />
+            <CreateUser cancelAction={handleCancel} />
           </Modal>
           <Modal
             destroyOnClosedestroyOnClose={true}
