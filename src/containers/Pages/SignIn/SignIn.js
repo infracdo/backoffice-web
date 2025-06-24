@@ -9,7 +9,7 @@ import Logo from '@zeep/assets/images/login_image.png';
 
 
 const initialState = {
-  email: "",
+  email_or_mobile_no: "",
   password: "",
 }
 export default function SignIn() {
@@ -48,7 +48,7 @@ export default function SignIn() {
   }
 
   const handleKeyDown = event => {
-    if (event.keyCode === 13 && credential.password && credential.email) {
+    if (event.keyCode === 13 && credential.password && credential.email_or_mobile_no) {
       handleLogin(event);
     }
   }
@@ -82,7 +82,7 @@ export default function SignIn() {
                   autoComplete="false" 
 
                   onKeyDown={(e) => handleKeyDown(e)}
-                  onChange={(value) => handleChange(value, "email")}
+                  onChange={(value) => handleChange(value, "email_or_mobile_no")}
                 />
               </div>
               <div className="isoInputWrapper">
@@ -103,7 +103,7 @@ export default function SignIn() {
                 size='large'
                   loading={loading}
                   type="primary" onClick={handleLogin}
-                  disabled={ !Object.keys.length || !credential.email || !credential.password}
+                  disabled={ !Object.keys.length || !credential.email_or_mobile_no || !credential.password}
                   style={SignInButtonStyle}>
                    { loading? "Signing in" : "Sign in"}
                 </Button>
