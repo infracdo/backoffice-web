@@ -2,31 +2,26 @@ import React, {  useEffect, useState, useRef } from 'react';
 import {
   Form,
   Input,
-  Select,
   Button,
   notification,
   Switch,
   Divider
 } from 'antd';
-import { postData, putData } from '@zeep/zustand/common/api';
+import { putData } from '@zeep/zustand/common/api';
 import sideBarStore from '@zeep/zustand/app/sidebar';
-const { Option } = Select;
 
-export default function  UserForm( { cancelAction } ) {
+export default function  BusinessOwnerForm( { cancelAction } ) {
   const [form] = Form.useForm();
-  const { validateFields, getFieldValue, setFieldsValue } = form;
-  const { post_loading, postRequest } = postData();
+  const { validateFields, setFieldsValue } = form;
   const { put_loading, putRequest } = putData();
   const { rerenderDetails } = sideBarStore();
-  const [ flag, setFlag ] = useState(false)
-  const [ confirm_dirty, setConfirmDirty ] = useState(false)
-  const [ user_details, setUserDetails ] = useState(JSON.parse((localStorage.getItem('view_user'))))
+  const [ user_details, setUserDetails ] = useState(JSON.parse((localStorage.getItem('view_business_owner'))))
 
   const firstTimeRender = useRef(true);
 
   useEffect(() => {
     if (!firstTimeRender.current) {
-        const selected = localStorage.getItem('view_user') || "";
+        const selected = localStorage.getItem('view_business_owner') || "";
         if(selected){
           const user = JSON.parse(selected)
           setUserDetails(prev=>({...prev, ...user}))
@@ -34,21 +29,19 @@ export default function  UserForm( { cancelAction } ) {
             email: user.email,
             name: user.name,
             mobile_no: user.mobile_no,
-            user_type: user.user_type,
+            device_id: user.device_id,
             is_active: user.is_active
           })
         } else {
           setUserDetails({});
           setTimeout(() => form.resetFields(), 0);
         }
-        setFlag(!flag)
       }
     }, [rerenderDetails]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { 
     firstTimeRender.current = false ;
-    setUserDetails( JSON.parse( localStorage.getItem('view_user') ))
-    setFlag(!flag)
+    setUserDetails( JSON.parse( localStorage.getItem('view_business_owner') ))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = () => {
@@ -72,10 +65,9 @@ export default function  UserForm( { cancelAction } ) {
       name: values.name,
       email: values.email,
       mobile_no: values.mobile_no,
-      user_type: values.user_type,
+      device_id: values.device_id,
       is_active: values.is_active
     }
-    if (user_details){
       putRequest(
         "user/update",
         {
@@ -83,7 +75,7 @@ export default function  UserForm( { cancelAction } ) {
           ...params
         }
       ).then((response) => {
-        const title = 'Update User'
+        const title = 'Update Business Owner'
         if(response?.data?.status === "ok"){
           notification['success']({
             message: title, 
@@ -99,52 +91,7 @@ export default function  UserForm( { cancelAction } ) {
           }) 
         }
       })
-    } else {
-      postRequest(
-        "user/create",
-        {
-          ...params,
-          password: values.password
-        }
-      ).then((response) => {
-        const title = 'Create New Account'
-        if(response?.data?.status === "ok"){
-          notification['success']({
-            message: title, 
-            description: response?.data?.message || 'Successfully added new user.'
-          })
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        } else {
-          notification['error']({
-            message: title, 
-            description: response?.data?.message
-          }) 
-        }
-      })
-    }    
   }
-
-  const handleConfirmBlur = e => {
-    const { value } = e.target;
-    setConfirmDirty(confirm_dirty || !!value);
-  };
-
-  const compareToFirstPassword = (rule, value, callback) => {
-    if (value && value !== getFieldValue('password')) {
-      return Promise.reject('Two passwords that you enter is inconsistent!');
-    } else {
-      return Promise.resolve();
-    }
-  };
-
-  const validateToNextPassword = (rule, value, callback) => {
-    if (value && confirm_dirty) {
-      validateFields(['confirm'], { force: true });
-    }
-    return Promise.resolve();
-  };
 
     const formItemLayout = {
       labelCol: {
@@ -170,6 +117,14 @@ export default function  UserForm( { cancelAction } ) {
               is_active: user_details?.is_active ?? false
             }}
             onFinish={handleSubmit} onFinishFailed={onFinishFailed} layout="horizontal" form={form} labelAlign="left" labelWrap={true} colon={false}>
+            <Form.Item
+              label="Full Name"
+              name="name"
+              initialValue={(user_details && user_details.name) || ""}
+              rules={[{ required: true, message: 'Please input Full name!'}]}
+            >
+              <Input />
+            </Form.Item>
               <Form.Item label="Email Address"
                 name="email"
                 initialValue= {(user_details && user_details.email) || ""}
@@ -186,45 +141,6 @@ export default function  UserForm( { cancelAction } ) {
               >
                 <Input readOnly={user_details?true:false}/>
               </Form.Item>
-              {!user_details?
-              <>
-              <Form.Item label="Password" hasFeedback
-                name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your password!',
-                  },
-                  {
-                    validator: validateToNextPassword,
-                  },
-                ]}
-              >
-              <Input.Password/>
-            </Form.Item>
-            <Form.Item label="Confirm Password" hasFeedback
-              name="confirm"
-              rules= {[
-                {
-                  required: true,
-                  message: 'Please confirm your password!',
-                },
-                {
-                  validator: compareToFirstPassword,
-                },
-              ]}
-            >
-              <Input.Password onBlur={handleConfirmBlur} />
-            </Form.Item></>
-              :null}
-            <Form.Item
-              label="Full Name"
-              name="name"
-              initialValue={(user_details && user_details.name) || ""}
-              rules={[{ required: true, message: 'Please input Full name!'}]}
-            >
-              <Input />
-            </Form.Item>
             <Form.Item label="Mobile Number"
               name="mobile_no"
               initialValue={(user_details && user_details.mobile_no) || ""}
@@ -232,16 +148,11 @@ export default function  UserForm( { cancelAction } ) {
               >
               <Input/>
             </Form.Item>
-            <Form.Item label="Role"
-              name="user_type"
-              initialValue={(user_details && user_details.user_type) || ""}
-              validateTrigger={["onChange", "onBlur"]}
-              rules={[{ required: true, message: 'Please select role!'}]}
-            >
-              <Select>
-                <Option value="admin">Admin</Option>
-                <Option value="support">Support</Option>
-              </Select>
+            <Form.Item label="Device ID"
+              name="device_id"
+              initialValue={(user_details && user_details.device_id) || ""}
+              >
+              <Input/>
             </Form.Item>
             <Form.Item label="Activated"
               name="is_active"
@@ -253,9 +164,9 @@ export default function  UserForm( { cancelAction } ) {
             <Form.Item {...tailFormItemLayout} style={{textAlign:"end", margin:"0"}}>
               <Button type="primary"
                 htmlType="submit" layout="vertical"
-                loading={post_loading||put_loading}
+                loading={put_loading}
                 style={{ marginRight:'5px', borderRadius: '5px' }}>
-                { user_details? put_loading? 'Updating user..' : 'Update user' : post_loading? 'Adding new user..' : 'Add new user'}
+                { put_loading? 'Updating business owner..' : 'Update business owner' }
               </Button>
               <Button type="default" style={{ borderRadius: '5px' }} onClick={cancelAction}> Cancel </Button>
             </Form.Item>

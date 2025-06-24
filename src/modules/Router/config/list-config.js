@@ -32,25 +32,16 @@ const table_columns = [
     render:  object => renderCell(object, 'TextCell', 'serial_no')
   },
   {
-    title: 'Router Version',
-    key: 'router_version',
+    title: 'Router Model',
+    key: 'router_model',
     align: "center",
     width: 100,
-    sorter: (a, b) => a.router_version.localeCompare(b.router_version),
+    sorter: (a, b) => a.router_model.localeCompare(b.router_model),
     sortDirections: ['descend', 'ascend'],
-    render:  object => renderCell(object, 'TextCell', 'router_version'),
+    render:  object => renderCell(object, 'TextCell', 'router_model')
   },
   {
-    title: 'GPS Coordinates',
-    key: 'gps_location',
-    align: "center",
-    width: 100,
-    sorter: (a, b) => a.gps_location.localeCompare(b.gps_location),
-    sortDirections: ['descend', 'ascend'],
-    render:  object => renderCell(object, 'TextCell', 'gps_location')
-  },
-  {
-    title: 'Data Usage (KB)',
+    title: 'Data Usage',
     key: 'data_usage',
     align: "center",
     width: 100,

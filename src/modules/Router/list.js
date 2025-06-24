@@ -3,7 +3,7 @@ import LayoutContentWrapper from '@zeep/components/utility/layoutWrapper.js';
 import Box from '@zeep/components/utility/box';
 import { Button, Modal, Spin, Col,
   Typography, Row, Input, Pagination, Divider } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
+import { DownloadOutlined, EditOutlined } from '@ant-design/icons';
 import ViewEouter from './form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
 import { tableinfo } from "./config/list-config";
@@ -42,16 +42,16 @@ export default function RoutersPage () {
         const temp = response.data.map(el => ({
           ...el,
           key: el.router_id,
-          gps_location: `(${el.lat}, ${el.long})`,
+          // gps_location: `(${el.lat}, ${el.long})`,
           status: el.is_enabled? 'Enabled': 'Disabled',
           action: (
-            <Button type="link" className="isoInvoPrint"
+            <Button type="link" icon={<EditOutlined />}
               onClick={()=>{
                 localStorage.setItem("view_router",JSON.stringify(el));
                 toggleUpdateModal();
               }
               }>
-                Update
+                Edit
               </Button>
         )
         }));
@@ -199,7 +199,7 @@ export default function RoutersPage () {
             maskClosable={false}
             open={show_update}
             title="Router Details"
-            width={600}
+            width={800}
             onOk={toggleUpdateModal}
             onCancel={toggleUpdateModal}
             footer={null}>

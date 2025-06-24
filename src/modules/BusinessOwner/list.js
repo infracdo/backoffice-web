@@ -2,11 +2,14 @@ import React, { useEffect, useState, useCallback } from "react";
 import LayoutContentWrapper from '@zeep/components/utility/layoutWrapper.js';
 import Box from '@zeep/components/utility/box';
 import { Button, Spin, Col,
-  Typography, Row, Input, Pagination } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
+  Typography, Row, Input, Pagination, Modal } from 'antd';
+import { DownloadOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import BusinessOwnerForm from './form';
+import RouterForm from './router-form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
 import { tableinfo } from "./config/list-config";
 import { getData, downloadData } from '@zeep/zustand/common/api';
+import sideBarStore from '@zeep/zustand/app/sidebar';
 const { Title } = Typography;
 const { Search } = Input;
 const user_types = "business_owner";
@@ -15,12 +18,14 @@ export default function BusinessOwnersPage () {
 
   const { get_loading, getRequest } = getData();
   const { downloading, downloadRequest } = downloadData();
+  const { toggleDetailsModal } = sideBarStore();
   const [ business_owners, setBusinessOwners ] = useState([]);
   const [ search, setSearch ] = useState("");
   const [ page, setPage ] = useState(1);
   const [ limit, setLimit ] = useState(50);
   const [ total_rows, setTotalrows ] = useState(0);
-
+  const [ show_update, setShowUpdate ] = useState(false);
+  const [ show_router, setShowRouter ] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getBusinessOwnerList = useCallback(() => {
@@ -36,6 +41,27 @@ export default function BusinessOwnersPage () {
         const temp = response.data.map(el => ({
           ...el,
           key: el.user_id,
+          action: (
+            <>
+            <Button type="link" icon={<PlusOutlined />}
+                onClick={()=>{
+                  localStorage.setItem("view_business_owner",JSON.stringify(el));
+                  toggleRouterModal();
+                }
+                }>
+                  Router
+                </Button>
+              <Button type="link" icon={<EditOutlined />}
+                onClick={()=>{
+                  localStorage.setItem("view_business_owner",JSON.stringify(el));
+                  toggleUpdateModal();
+                }
+                }>
+                  Edit
+                </Button>
+                
+                </>
+        )
         }));
         setBusinessOwners(temp);
         setTotalrows(response?.total_rows);
@@ -44,7 +70,7 @@ export default function BusinessOwnersPage () {
         setTotalrows(0);
       }
     });
-  }, [search, page, limit, getRequest]);
+  }, [search, page, limit, getRequest]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const download = () => {    
@@ -70,12 +96,28 @@ export default function BusinessOwnersPage () {
   const onSearchUser = (val) => {
     setSearch(val);
   }
+
+  const toggleUpdateModal = () => {
+    if(show_update){
+      localStorage.removeItem("view_business_owner")
+    }
+    setShowUpdate(!show_update)
+    toggleDetailsModal();
+  };
+
+  const toggleRouterModal = () => {
+    if(show_router){
+      localStorage.removeItem("view_business_owner")
+    }
+    setShowRouter(!show_router)
+    toggleDetailsModal();
+  }
   
      
 		return(
 			<LayoutContentWrapper key="business-owner-list">
             <Box>
-              <Spin spinning={get_loading} tip="Fetching users..">
+              <Spin spinning={get_loading} tip="Fetching business owners..">
                 <Row>
                 <Col sm={12} >
                   <Title level={4}>Business Owner List</Title>
@@ -121,8 +163,27 @@ export default function BusinessOwnersPage () {
                   />
                 </Col>
                 </Spin>
-
-            </Box>                  
+            </Box>       
+            <Modal
+              destroyOnClosedestroyOnClose={true}
+              maskClosable={false} open={show_update}
+              title="Business Owner Details"
+              width={600}
+              onOk={toggleUpdateModal}
+              onCancel={toggleUpdateModal}
+              footer={null}>
+              <BusinessOwnerForm cancelAction={toggleUpdateModal}/>
+            </Modal>
+            <Modal
+              destroyOnClosedestroyOnClose={true}
+              maskClosable={false} open={show_router}
+              title="Add New Router"
+              width={800}
+              onOk={toggleRouterModal}
+              onCancel={toggleRouterModal}
+              footer={null}>
+              <RouterForm cancelAction={toggleRouterModal}/>
+            </Modal>           
     	  </LayoutContentWrapper>
 			)
 	}

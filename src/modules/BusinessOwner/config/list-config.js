@@ -66,6 +66,13 @@ const table_columns = [
     sorter: (a, b) => a.total_data_usage.localeCompare(b.total_data_usage),
     sortDirections: ['descend', 'ascend'],
     render: (record) => { return <p>{formatKilobytes(record.total_data_usage)}</p> }
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    align: "center",
+    width: 100,
+    render:  object => renderCell(object, 'TextCell', 'action')
   }
 ]
 
@@ -87,6 +94,15 @@ const sub_columns = [
     sorter: (a, b) => a.serial_no.localeCompare(b.serial_no),
     sortDirections: ['descend', 'ascend'],
     render:  object => renderCell(object, 'TextCell', 'serial_no')
+  },
+  {
+    title: 'Router Model',
+    key: 'router_model',
+    align: "center",
+    width: 100,
+    sorter: (a, b) => a.router_model.localeCompare(b.router_model),
+    sortDirections: ['descend', 'ascend'],
+    render:  object => renderCell(object, 'TextCell', 'router_model')
   },
   {
     title: 'Data Usage',

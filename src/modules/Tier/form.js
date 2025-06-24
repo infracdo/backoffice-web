@@ -4,7 +4,7 @@ import {
   Input,
   Button,
   notification,
-  Switch
+  Switch, Divider
 } from 'antd';
 import { postData, putData } from '@zeep/zustand/common/api';
 import sideBarStore from '@zeep/zustand/app/sidebar';
@@ -133,14 +133,7 @@ export default function  CreateTier( { cancelAction } ) {
     };
     const tailFormItemLayout = {
       wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
+        span: 24,
       }
     };
 
@@ -178,14 +171,15 @@ export default function  CreateTier( { cancelAction } ) {
               >
                 <Switch/>
             </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
+            <Divider style={{margin:"0px 0px 16px 0"}}/>
+            <Form.Item {...tailFormItemLayout} style={{textAlign:"end", margin:"0"}}>
               <Button type="primary"
                 htmlType="submit" layout="vertical"
                 loading={post_loading||put_loading}
-                style={{width:150, marginRight:'5px'}}>
+                style={{ marginRight:'5px', borderRadius: '5px' }}>
                 { tier_details? put_loading? 'Updating tier..' : 'Update tier' : post_loading? 'Adding new tier..' : 'Add new tier'}
               </Button>
-              <Button type="default" onClick={cancelAction}> Cancel </Button>
+              <Button type="default" style={{ borderRadius: '5px' }} onClick={cancelAction}> Cancel </Button>
             </Form.Item>
           </Form>
     );

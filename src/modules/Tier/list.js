@@ -3,8 +3,7 @@ import LayoutContentWrapper from '@zeep/components/utility/layoutWrapper.js';
 import Box from '@zeep/components/utility/box';
 import { Button, Modal, Spin, Col,
   Typography, Row, Input } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { DownloadOutlined, PlusCircleOutlined, EditOutlined } from '@ant-design/icons';
 import CreateTier from './form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
 import { tableinfo } from "./config/list-config";
@@ -39,13 +38,13 @@ export default function TiersPage () {
           name_with_default: el.is_default_tier? `${el.name} - default` : el.name,
           formatted_data_limit: formatKilobytes(el.data_limit),
           action: (
-            <Button type="link" className="isoInvoPrint"
+            <Button type="link" icon={<EditOutlined />}
               onClick={()=>{
                 localStorage.setItem("view_tier",JSON.stringify(el));
                 toggleUpdateModal();
               }
               }>
-                Update
+                Edit
               </Button>
         )
         }));
@@ -151,7 +150,7 @@ export default function TiersPage () {
           <Modal
             destroyOnClosedestroyOnClose={true}
             maskClosable={false} open={show_update}
-            title="Upate Tier"
+            title="Tier Details"
             width={600}
             onOk={toggleUpdateModal}
             onCancel={toggleUpdateModal}

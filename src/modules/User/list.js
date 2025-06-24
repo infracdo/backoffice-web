@@ -3,9 +3,8 @@ import LayoutContentWrapper from '@zeep/components/utility/layoutWrapper.js';
 import Box from '@zeep/components/utility/box';
 import { Button, Modal, Spin, Col,
   Typography, Row, Input } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
-import { PlusCircleOutlined } from '@ant-design/icons';
-import CreateUser from './form';
+import { PlusCircleOutlined, EditOutlined, DownloadOutlined } from '@ant-design/icons';
+import UserForm from './form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
 import { tableinfo } from "./config/list-config";
 import { getData, downloadData } from '@zeep/zustand/common/api';
@@ -38,13 +37,13 @@ export default function UsersPage () {
           ...el,
           key: el.user_id,
           action: (
-            <Button type="link" className="isoInvoPrint"
+            <Button type="link" icon={<EditOutlined />}
               onClick={()=>{
                 localStorage.setItem("view_user",JSON.stringify(el));
                 toggleUpdateModal();
               }
               }>
-                Update
+                Edit
               </Button>
         )
         }));
@@ -146,17 +145,17 @@ export default function UsersPage () {
             onOk={handleOk}
             onCancel={handleCancel}
             footer={null}>
-            <CreateUser cancelAction={handleCancel} />
+            <UserForm cancelAction={handleCancel} />
           </Modal>
           <Modal
             destroyOnClosedestroyOnClose={true}
             maskClosable={false} open={show_update}
-            title="Upate User"
+            title="User Details"
             width={600}
             onOk={toggleUpdateModal}
             onCancel={toggleUpdateModal}
             footer={null}>
-            <CreateUser cancelAction={toggleUpdateModal}/>
+            <UserForm cancelAction={toggleUpdateModal}/>
           </Modal>
     	  </LayoutContentWrapper>
 			)

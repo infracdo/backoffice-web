@@ -44,7 +44,7 @@ const table_columns = [
     title: 'Action',
     key: 'action',
     align: 'center',
-    width: 120,
+    width: 80,
     render:  object => renderCell(object, 'TextCell', 'action')
   }
 ]

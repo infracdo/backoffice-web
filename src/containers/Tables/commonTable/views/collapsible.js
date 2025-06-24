@@ -15,9 +15,10 @@ export default class extends Component {
     const onChange = this.props.onChange ? this.props.onChange : undefined;
     return (
       <TableWrapper
+      size="small"
         columns={columns}
         dataSource={dataSource}
-	    loading={loading}
+	      loading={loading}
         pagination={false}
         onChange={onChange}
         bordered = {bordered}
@@ -34,7 +35,8 @@ export default class extends Component {
                 style={{ padding: 15 }}
                 pagination={false}
                 rowKey={sub_row_key}
-            />)
+            />),
+            rowExpandable: record => record[sub_key].length,
           }
         }
       />
