@@ -151,4 +151,25 @@ const uploadData = create((set) => ({
   },
 }));
 
-export { getData, postData, downloadData, uploadData, putData};
+const deleteData = create((set) => ({
+  response: {},
+  delete_loading: false,
+  error: null,
+  deleteRequest: async (route, params) => {
+    set({ delete_loading: true });
+    try {
+      const url = `${baseURL}/${route}`;
+      const response = await axios.delete(url, {
+        ...getHeaders(),
+        params
+      });
+      set({ ...response.data, delete_loading: false });
+      return response
+    } catch (error) {
+      set({ error, delete_loading: false });
+      message.error("Something went wrong");
+    }
+  },
+}));
+
+export { getData, postData, downloadData, uploadData, putData, deleteData};

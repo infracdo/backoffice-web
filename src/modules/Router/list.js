@@ -2,12 +2,12 @@ import React, { useEffect, useState, useCallback } from "react";
 import LayoutContentWrapper from '@zeep/components/utility/layoutWrapper.js';
 import Box from '@zeep/components/utility/box';
 import { Button, Modal, Spin, Col,
-  Typography, Row, Input, Pagination, Divider } from 'antd';
-import { DownloadOutlined, EditOutlined } from '@ant-design/icons';
+  Typography, Row, Input, Pagination, Divider, Popconfirm, notification } from 'antd';
+import { DownloadOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import ViewEouter from './form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
 import { tableinfo } from "./config/list-config";
-import { getData, downloadData } from '@zeep/zustand/common/api';
+import { getData, downloadData, deleteData } from '@zeep/zustand/common/api';
 import { formatKilobytes, valueType } from '@zeep/lib/helpers/utility'
 import sideBarStore from '@zeep/zustand/app/sidebar';
 const { Title } = Typography;
@@ -16,6 +16,7 @@ const { Search } = Input;
 export default function RoutersPage () {
 
   const { get_loading, getRequest } = getData();
+  const { delete_loading, deleteRequest } = deleteData();
   const { downloading, downloadRequest } = downloadData();
   const { toggleDetailsModal } = sideBarStore();
   const [ routers, setRouters ] = useState([]);
@@ -45,6 +46,7 @@ export default function RoutersPage () {
           // gps_location: `(${el.lat}, ${el.long})`,
           status: el.is_enabled? 'Enabled': 'Disabled',
           action: (
+            <>
             <Button type="link" icon={<EditOutlined />}
               onClick={()=>{
                 localStorage.setItem("view_router",JSON.stringify(el));
@@ -53,6 +55,17 @@ export default function RoutersPage () {
               }>
                 Edit
               </Button>
+              <Popconfirm
+                title="Are you sure to delete this router?"
+                okText="DELETE"
+                cancelText="Cancel"
+                onConfirm={() => onDelete(el)}
+              >
+                <Button type="link" icon={<DeleteOutlined/>} danger>
+                  Delete
+                </Button>
+              </Popconfirm>
+          </>
         )
         }));
         setRouters(temp);
@@ -67,8 +80,7 @@ export default function RoutersPage () {
       }
     });
   }, [search, page, limit, getRequest]);  // eslint-disable-line react-hooks/exhaustive-deps
-
-
+  
   const download = () => {    
     if (downloading) {
       return
@@ -83,16 +95,39 @@ export default function RoutersPage () {
     )
   }
 
+  const onDelete = (el) => {
+    console.log("onDelete", el)
+    deleteRequest(
+      "router/delete",
+      {
+        id: el.router_id
+      }
+    ).then((response) => {
+      const title = 'Delete Router'
+      if(response?.data?.status === "ok"){
+        notification['success']({
+          message: title, 
+          description: response?.data?.message || 'Router deleted successfully!'
+        })
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        notification['error']({
+          message: title, 
+          description: response?.data?.message
+        }) 
+      }
+    })
+  }
+
   useEffect(() => {
     getRouterList();
   }, [getRouterList]);
   
-
   const onSearchRouter = (val) => {
     setSearch(val);
-
   }
-
 
   const toggleUpdateModal = () => {
     if(show_update){
@@ -106,7 +141,7 @@ export default function RoutersPage () {
 		return(
 			<LayoutContentWrapper key="router-list">
             <Box>
-              <Spin spinning={get_loading} tip="Fetching routers..">
+              <Spin spinning={get_loading || delete_loading} tip={get_loading?"Fetching routers..":"Deleting router.."}>
                 <Row type='flex' align="middle" style={{ marginBottom:'2em' }}>                
                   <Col sm={8} style={{padding:"10px"}}>
                     <Box className="isoSummaryBox">

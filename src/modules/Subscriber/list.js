@@ -2,11 +2,11 @@ import React, { useEffect, useState, useCallback } from "react";
 import LayoutContentWrapper from '@zeep/components/utility/layoutWrapper.js';
 import Box from '@zeep/components/utility/box';
 import { Button, Spin, Col,
-  Typography, Row, Input, Pagination } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
+  Typography, Row, Input, Pagination, notification, Popconfirm } from 'antd';
+import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
 import { tableinfo } from "./config/list-config";
-import { getData, downloadData } from '@zeep/zustand/common/api';
+import { getData, downloadData, deleteData } from '@zeep/zustand/common/api';
 const { Title } = Typography;
 const { Search } = Input;
 const user_types = "subscriber";
@@ -15,6 +15,7 @@ export default function SubscribersPage () {
 
   const { get_loading, getRequest } = getData();
   const { downloading, downloadRequest } = downloadData();
+  const { delete_loading, deleteRequest } = deleteData();
   const [ subscribers, setSubscribers ] = useState([]);
   const [ search, setSearch ] = useState("");
   const [ page, setPage ] = useState(1);
@@ -22,7 +23,6 @@ export default function SubscribersPage () {
   const [ total_rows, setTotalrows ] = useState(0);
 
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getSubscriberList = useCallback(() => {
     getRequest("user/list",
     {
@@ -36,6 +36,18 @@ export default function SubscribersPage () {
         const temp = response.data.map(el => ({
           ...el,
           key: el.user_id,
+          action: (
+            <Popconfirm
+              title="Are you sure to delete this subscriber?"
+              okText="DELETE"
+              cancelText="Cancel"
+              onConfirm={() => onDelete(el)}
+            >
+              <Button type="link" icon={<DeleteOutlined/>} danger>
+                Delete
+              </Button>
+            </Popconfirm>
+        )
         }));
         setSubscribers(temp);
         setTotalrows(response?.total_rows);
@@ -44,7 +56,7 @@ export default function SubscribersPage () {
         setTotalrows(0);
       }
     });
-  }, [search, page, limit, getRequest]);
+  }, [search, page, limit, getRequest]);   // eslint-disable-next-line react-hooks/exhaustive-deps
 
 
   const download = () => {    
@@ -62,6 +74,32 @@ export default function SubscribersPage () {
     )
   }
 
+  const onDelete = (el) => {
+    console.log("onDelete", el)
+    deleteRequest(
+      "user/delete",
+      {
+        id: el.user_id
+      }
+    ).then((response) => {
+      const title = 'Delete Subscriber'
+      if(response?.data?.status === "ok"){
+        notification['success']({
+          message: title, 
+          description: response?.data?.message || 'Subscriber deleted successfully!'
+        })
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        notification['error']({
+          message: title, 
+          description: response?.data?.message
+        }) 
+      }
+    })
+  }
+
   useEffect(() => {
     getSubscriberList();
   }, [getSubscriberList]);
@@ -75,7 +113,7 @@ export default function SubscribersPage () {
 		return(
 			<LayoutContentWrapper key="subscriber-list">
             <Box>
-              <Spin spinning={get_loading} tip="Fetching users..">
+              <Spin spinning={get_loading || delete_loading } tip={get_loading?"Fetching subscribers..":"Deleting subscriber.."}>
                 <Row>
                 <Col sm={12} >
                   <Title level={4}>Subscriber List</Title>

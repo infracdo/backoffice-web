@@ -76,6 +76,13 @@ const table_columns = [
     sortDirections: ['descend', 'ascend'],
     render:  object => renderCell(object, 'TextCell', 'tier')
   },
+  {
+    title: 'Action',
+    key: 'action',
+    align: 'center',
+    width: 100,
+    render:  object => renderCell(object, 'TextCell', 'action')
+  }
 ]
 
 let tableinfo = {
