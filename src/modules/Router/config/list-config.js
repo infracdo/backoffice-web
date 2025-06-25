@@ -1,6 +1,6 @@
 import React from "react";
 import clone from "clone";
-import { formatDate, valueType, formatKilobytes } from '@zeep/lib/helpers/utility';
+import { formatDate, valueType, formatMegabytes } from '@zeep/lib/helpers/utility';
 import { renderCell } from "@zeep/containers/Tables/commonTable/config";
 
 const table_columns = [
@@ -47,7 +47,7 @@ const table_columns = [
     width: 100,
     sorter: (a, b) => a.router_version.localeCompare(b.data_usage),
     sortDirections: ['descend', 'ascend'],
-    render: (record) => { return <p>{formatKilobytes(record.data_usage)}</p> }
+    render: (record) => { return <p>{formatMegabytes(record.data_usage)}</p> }
   },
   {
     title: 'Subscribers Count',

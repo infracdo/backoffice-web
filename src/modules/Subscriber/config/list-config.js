@@ -1,6 +1,6 @@
 import React from "react";
 import clone from "clone";
-import { formatDate, formatKilobytes } from '@zeep/lib/helpers/utility';
+import { formatDate, formatMegabytes } from '@zeep/lib/helpers/utility';
 import { renderCell } from "@zeep/containers/Tables/commonTable/config";
 
 const table_columns = [
@@ -56,7 +56,7 @@ const table_columns = [
     width: 100,
     sorter: (a, b) => a.data_limit.localeCompare(b.data_limit),
     sortDirections: ['descend', 'ascend'],
-    render: (record) => { return <p>{formatKilobytes(record.data_limit)}</p> }
+    render: (record) => { return <p>{formatMegabytes(record.data_limit)}</p> }
   },
   {
     title: 'Data Usage',
@@ -65,7 +65,7 @@ const table_columns = [
     width: 100,
     sorter: (a, b) => a.data_usage.localeCompare(b.data_usage),
     sortDirections: ['descend', 'ascend'],
-    render: (record) => { return <p>{formatKilobytes(record.data_usage)}</p> }
+    render: (record) => { return <p>{formatMegabytes(record.data_usage)}</p> }
   },
   {
     title: 'Tier',

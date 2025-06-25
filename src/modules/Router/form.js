@@ -206,7 +206,7 @@ export default function  ViewRouterPage( { cancelAction }) {
                   >
                   <Input/>
                 </Form.Item>
-                <Form.Item label="Data Usage (KB)"
+                <Form.Item label="Data Usage (MB)"
                   name="data_usage"
                   initialValue={(router_details && router_details.data_usage) || 0}
                   >

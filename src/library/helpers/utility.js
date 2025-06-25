@@ -158,3 +158,15 @@ export function formatKilobytes(kb) {
 
   return `${value.toFixed(2)} ${units[i]}`;
 }
+
+export function formatMegabytes(mb) {
+  if (mb === 0 || !mb) return "0 KB";
+
+  const kb = mb * 1024; // convert MB to KB
+  const units = ["KB", "MB", "GB", "TB"];
+  const k = 1024;
+  const i = Math.floor(Math.log(kb) / Math.log(k));
+  const value = kb / Math.pow(k, i);
+
+  return `${value.toFixed(2)} ${units[i]}`;
+}

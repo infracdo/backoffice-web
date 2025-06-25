@@ -8,7 +8,7 @@ import ViewEouter from './form';
 import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
 import { tableinfo } from "./config/list-config";
 import { getData, downloadData, deleteData } from '@zeep/zustand/common/api';
-import { formatKilobytes, valueType } from '@zeep/lib/helpers/utility'
+import { formatMegabytes, valueType } from '@zeep/lib/helpers/utility'
 import sideBarStore from '@zeep/zustand/app/sidebar';
 const { Title } = Typography;
 const { Search } = Input;
@@ -162,7 +162,7 @@ export default function RoutersPage () {
                       <div className="boxContent">
                         <Col style={{display:"inline-flex"}}>
                           <h3 className="right-space">TOTAL DATA USAGE:</h3>
-                          <h3 className="figure">{formatKilobytes(total_data_usage)}</h3>
+                          <h3 className="figure">{formatMegabytes(total_data_usage)}</h3>
                           </Col>
                       </div>
                       </Box>

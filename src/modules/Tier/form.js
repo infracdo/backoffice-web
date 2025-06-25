@@ -159,7 +159,7 @@ export default function  CreateTier( { cancelAction } ) {
               >
               <Input/>
             </Form.Item>
-            <Form.Item label="Data Limit (KB)"
+            <Form.Item label="Data Limit (MB)"
               name="data_limit"
               initialValue={(tier_details && tier_details.data_limit) || ""}
               >
