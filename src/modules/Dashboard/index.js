@@ -53,8 +53,8 @@ const Dashboard = () => {
   );
 
   return (
-    <LayoutContentWrapper key="router-list">
-        <Spin spinning={false} tip="Loading..">
+    <LayoutContentWrapper key="dashboard">
+        <Spin spinning={get_loading} tip="Loading..">
           <Row justify="space-between" align="middle">
             <Title level={4}>Dashboard</Title>
             <ReloadOutlined

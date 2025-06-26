@@ -18,7 +18,8 @@ export default function ForgotPassword() {
       return
     }
     forgotPasswordRequest({
-      email
+      email,
+      user_type: "backoffice_user"
     });
   }
   return (

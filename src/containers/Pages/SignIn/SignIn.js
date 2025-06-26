@@ -33,7 +33,11 @@ export default function SignIn() {
     if (loading) {
       return
     }
-    loginRequest(credential);
+    loginRequest(
+      {
+        ...credential,
+        user_type: "backoffice_user"}
+      );
     clearMenu();
     // history.push('/app/dashboard');
   }
