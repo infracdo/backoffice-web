@@ -1,6 +1,6 @@
 import React from "react";
 import clone from "clone";
-import { formatDate, formatMegabytes } from '@zeep/lib/helpers/utility';
+import { formatDate, formatMegabytes, valueType } from '@zeep/lib/helpers/utility';
 import { renderCell } from "@zeep/containers/Tables/commonTable/config";
 
 const table_columns = [
@@ -45,25 +45,33 @@ const table_columns = [
     key: 'total_routers',
     align: 'center',
     width: 100,
-    sorter: (a, b) => a.total_routers.localeCompare(b.total_routers),
+    sorter: (a, b) => a.total_routers - b.total_routers,
     sortDirections: ['descend', 'ascend'],
-    render:  object => renderCell(object, 'TextCell', 'total_routers')
+    render: (record) => { return <p>{valueType(
+      record.total_routers
+        ? record.total_routers
+        : 0
+    )}</p>}
   },
   {
     title: 'Total Subscriber',
     key: 'total_subscribers',
     align: 'center',
     width: 100,
-    sorter: (a, b) => a.total_subscribers.localeCompare(b.total_subscribers),
+    sorter: (a, b) => a.total_subscribers - b.total_subscribers,
     sortDirections: ['descend', 'ascend'],
-    render:  object => renderCell(object, 'TextCell', 'total_subscribers')
+    render: (record) => { return <p>{valueType(
+      record.total_subscribers
+        ? record.total_subscribers
+        : 0
+    )}</p>}
   },
   {
     title: 'Total Data Usage',
     key: 'total_data_usage',
     align: 'center',
     width: 100,
-    sorter: (a, b) => a.total_data_usage.localeCompare(b.total_data_usage),
+    sorter: (a, b) => a.total_data_usage - b.total_data_usage,
     sortDirections: ['descend', 'ascend'],
     render: (record) => { return <p>{formatMegabytes(record.total_data_usage)}</p> }
   },
@@ -105,22 +113,26 @@ const sub_columns = [
     render:  object => renderCell(object, 'TextCell', 'router_model')
   },
   {
-    title: 'Data Usage',
-    key: 'data_usage',
-    align: "center",
-    width: 100,
-    sorter: (a, b) => a.router_version.localeCompare(b.data_usage),
-    sortDirections: ['descend', 'ascend'],
-    render: (record) => { return <p>{formatMegabytes(record.data_usage)}</p> }
-  },
-  {
     title: 'Subscribers Count',
     key: 'subscribers_count',
     align: "center",
     width: 100,
-    sorter: (a, b) => a.subscribers_count.localeCompare(b.subscribers_count),
+    sorter: (a, b) => a.subscribers_count - b.subscribers_count,
     sortDirections: ['descend', 'ascend'],
-    render: (record) => { return <p>{record.subscribers_count || 0}</p> }
+    render: (record) => { return <p>{valueType(
+      record.subscribers_count
+        ? record.subscribers_count
+        : 0
+    )}</p>}
+  },
+  {
+    title: 'Data Usage',
+    key: 'data_usage',
+    align: "center",
+    width: 100,
+    sorter: (a, b) => a.data_usage - b.data_usage,
+    sortDirections: ['descend', 'ascend'],
+    render: (record) => { return <p>{formatMegabytes(record.data_usage)}</p> }
   },
   {
     title: 'Status',

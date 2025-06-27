@@ -9,7 +9,6 @@ import * as commonTableViews from '@zeep/containers/Tables/commonTable/views';
 import { tableinfo } from "./config/list-config";
 import { getData, downloadData } from '@zeep/zustand/common/api';
 import sideBarStore from '@zeep/zustand/app/sidebar';
-import { formatMegabytes } from '@zeep/lib/helpers/utility'
 const { Title } = Typography;
 const { Search } = Input;
 
@@ -36,7 +35,6 @@ export default function TiersPage () {
           ...el,
           key: el.tier_id,
           name_with_default: el.is_default_tier? `${el.name} - default` : el.name,
-          formatted_data_limit: formatMegabytes(el.data_limit),
           action: (
             <Button type="link" icon={<EditOutlined />}
               onClick={()=>{

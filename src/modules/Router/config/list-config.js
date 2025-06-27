@@ -45,7 +45,7 @@ const table_columns = [
     key: 'data_usage',
     align: "center",
     width: 100,
-    sorter: (a, b) => a.router_version.localeCompare(b.data_usage),
+    sorter: (a, b) => a.data_usage - b.data_usage,
     sortDirections: ['descend', 'ascend'],
     render: (record) => { return <p>{formatMegabytes(record.data_usage)}</p> }
   },
@@ -54,7 +54,7 @@ const table_columns = [
     key: 'subscribers_count',
     align: "center",
     width: 100,
-    sorter: (a, b) => a.subscribers_count.localeCompare(b.subscribers_count),
+    sorter: (a, b) => a.subscribers_count - b.subscribers_count,
     sortDirections: ['descend', 'ascend'],
     render: (record) => { return <p>{valueType(
       record.subscribers_count

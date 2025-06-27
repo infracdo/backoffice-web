@@ -1,6 +1,7 @@
+import React from "react";
 import clone from "clone";
 import { renderCell } from "@zeep/containers/Tables/commonTable/config";
-
+import { formatMegabytes } from '@zeep/lib/helpers/utility';
 
 const table_columns = [
   {
@@ -23,11 +24,11 @@ const table_columns = [
   },
   {
     title: 'Data Limit',
-    key: 'formatted_data_limit',align: 'center',
+    key: 'data_limit',align: 'center',
     width: 120,
-    sorter: (a, b) => a.formatted_data_limit.localeCompare(b.formatted_data_limit),
+    sorter: (a, b) => a.data_limit - b.data_limit,
     sortDirections: ['descend', 'ascend'],
-    render:  object => renderCell(object, 'TextCell', 'formatted_data_limit')
+    render: (record) => { return <p>{formatMegabytes(record.data_limit)}</p> }
   },
   {
     title: 'Action',

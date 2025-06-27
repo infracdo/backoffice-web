@@ -9,7 +9,7 @@ import routerIcon from '@zeep/assets/images/icon-wifi-router.png';
 import onlinePersonIcon from '@zeep/assets/images/icon-online-person.png';
 import dataIcon from '@zeep/assets/images/icon-data.png';
 import { getData } from '@zeep/zustand/common/api';
-import { formatMegabytes } from "../../library/helpers/utility";
+import { formatMegabytes, valueType } from "../../library/helpers/utility";
 
 const { Title } = Typography;
 
@@ -69,22 +69,59 @@ const Dashboard = () => {
         </Row>
           <Row gutter={[16, 16]}>
             <Col span={8}>
-              <MetricCard title="Total Business Owners" value={data?.total_business_owners || 0} icon={ownerIcon}/>
+              <MetricCard 
+                title="Total Business Owners"
+                value={valueType(
+                  data?.total_business_owners
+                    ? data.total_business_owners
+                    : 0
+                )} icon={ownerIcon}/>
             </Col>
             <Col span={8}>
-              <MetricCard title="Total Routers" value={data?.total_routers || 0} icon={routerIcon}/>
+              <MetricCard
+                title="Total Routers"
+                value={valueType(
+                  data?.total_routers
+                    ? data.total_routers
+                    : 0
+                )}
+                icon={routerIcon}/>
             </Col>
             <Col span={8}>
-              <MetricCard title="Total Subscribers" value={data?.total_subscribers || 0} icon={subscriberIcon}/>
+              <MetricCard
+                title="Total Subscribers"
+                value={valueType(
+                  data?.total_subscribers
+                    ? data.total_subscribers
+                    : 0
+                )}
+                icon={subscriberIcon}/>
             </Col>
             <Col span={8}>
-              <MetricCard title="Total Online Routers" value={data?.total_online_router || 0} icon={routerIcon}/>
+              <MetricCard
+                title="Total Online Routers"
+                value={valueType(
+                  data?.total_online_router
+                    ? data.total_online_router
+                    : 0
+                )}
+                icon={routerIcon}/>
             </Col>
             <Col span={8}>
-              <MetricCard title="Total Online Subscribers" value={data?.total_online_subscriber || 0} icon={onlinePersonIcon}/>
+              <MetricCard
+                title="Total Online Subscribers"
+                value={valueType(
+                  data?.total_online_subscriber
+                    ? data.total_online_subscriber
+                    : 0
+                )}
+                icon={onlinePersonIcon}/>
             </Col>
             <Col span={8}>
-              <MetricCard title="Total Data Usage" value={formatMegabytes(data?.total_data_usage || 0)} icon={dataIcon}/>
+              <MetricCard
+                title="Total Data Usage"
+                value={formatMegabytes(data?.total_data_usage || 0)}
+                icon={dataIcon}/>
             </Col>
           </Row>
         </Spin>

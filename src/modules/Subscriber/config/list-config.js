@@ -54,7 +54,7 @@ const table_columns = [
     key: 'data_limit',
     align: 'center',
     width: 100,
-    sorter: (a, b) => a.data_limit.localeCompare(b.data_limit),
+    sorter: (a, b) => a.data_limit - b.data_limit,
     sortDirections: ['descend', 'ascend'],
     render: (record) => { return <p>{formatMegabytes(record.data_limit)}</p> }
   },
@@ -63,7 +63,7 @@ const table_columns = [
     key: 'data_usage',
     align: 'center',
     width: 100,
-    sorter: (a, b) => a.data_usage.localeCompare(b.data_usage),
+    sorter: (a, b) => a.data_usage - b.data_usage,
     sortDirections: ['descend', 'ascend'],
     render: (record) => { return <p>{formatMegabytes(record.data_usage)}</p> }
   },
@@ -72,7 +72,7 @@ const table_columns = [
     key: 'data_left',
     align: 'center',
     width: 100,
-    sorter: (a, b) => a.data_left.localeCompare(b.data_left),
+    sorter: (a, b) => a.data_left - b.data_left,
     sortDirections: ['descend', 'ascend'],
     render: (record) => { return <p>{formatMegabytes(record.data_left)}</p> }
   },
