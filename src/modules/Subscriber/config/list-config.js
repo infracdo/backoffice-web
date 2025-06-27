@@ -68,6 +68,15 @@ const table_columns = [
     render: (record) => { return <p>{formatMegabytes(record.data_usage)}</p> }
   },
   {
+    title: 'Data Left',
+    key: 'data_left',
+    align: 'center',
+    width: 100,
+    sorter: (a, b) => a.data_left.localeCompare(b.data_left),
+    sortDirections: ['descend', 'ascend'],
+    render: (record) => { return <p>{formatMegabytes(record.data_left)}</p> }
+  },
+  {
     title: 'Tier',
     key: 'tier',
     align: 'center',
