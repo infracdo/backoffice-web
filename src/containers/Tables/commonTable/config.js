@@ -14,8 +14,8 @@ const renderCell = (object, type, key, key2=false, data_type, link) => {
     value = formatDate(value)
   } else if(key==='full_name'){
     value = object.middle_name? `${object.first_name} ${object.middle_name} ${object.last_name}`:`${object.first_name} ${object.last_name}`
-  } else if(key==="description"){
-    value = value.substring(0, 150) + '...'
+  } else if(key==="description" || key==="link_url"){
+    value = value.substring(0, 50) + '...'
   }
   if(data_type && data_type ==='number'){ 
     if (value){

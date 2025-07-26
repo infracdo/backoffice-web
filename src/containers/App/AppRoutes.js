@@ -17,6 +17,10 @@ const routes = [
     component: lazy(() => import("@zeep/modules/Subscriber/list"))
   },
   {
+    path: "promo",
+    component: lazy(() => import("@zeep/modules/Promo/list"))
+  },
+  {
     path: "otp",
     component: lazy(() => import("@zeep/modules/Otp/list"))
   },

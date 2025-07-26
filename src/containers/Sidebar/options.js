@@ -19,6 +19,12 @@ const options = [
 		roles: ["admin","support"],
 	},
 	{
+		key: 'promo',
+		label: 'Promos',
+		leftIcon: 'ion-ios-bolt',
+		roles: ["admin","support"],
+	},
+	{
 		key: 'otp',
 		label: 'OTP',
 		leftIcon: 'ion-android-textsms',
