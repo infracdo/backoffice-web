@@ -39,6 +39,15 @@ const table_columns = [
     render:  object => renderCell(object, 'TextCell', 'link_url'),
   },
   {
+    title: 'Type',
+    key: 'type',
+    align: 'center',
+    width: 120,
+    sorter: (a, b) => a.type.localeCompare(b.type),
+    sortDirections: ['descend', 'ascend'],
+    render:  object => renderCell(object, 'TextCell', 'type'),
+  },
+  {
     title: 'Show',
     key: 'is_show',
     align: 'center',

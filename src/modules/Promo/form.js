@@ -2,6 +2,7 @@ import React, {  useEffect, useState, useRef } from 'react';
 import {
   Form,
   Input,
+  Select,
   Upload,
   Button,
   notification,
@@ -12,6 +13,8 @@ import { UploadOutlined } from '@ant-design/icons';
 import { postData, putData } from '@zeep/zustand/common/api';
 import sideBarStore from '@zeep/zustand/app/sidebar';
 const { TextArea } = Input;
+const { Option } = Select;
+
 const uploader_url = process.env.REACT_APP_API_URL+"/promo/upload/file"
 let logo_file;
 let is_removed = false
@@ -38,6 +41,7 @@ export default function  PromoForm( { cancelAction } ) {
             image_url: promo.image_url,
             link_url: promo.link_url,
             title: promo.title,
+            type: promo.type,
             description: promo.description,
             is_show: promo.is_show
           })
@@ -79,6 +83,7 @@ export default function  PromoForm( { cancelAction } ) {
       image_url,
       link_url: values.link_url,
       title: values.title,
+      type: values.type,
       description: values.description,
       is_show: values.is_show
     }
@@ -240,6 +245,17 @@ export default function  PromoForm( { cancelAction } ) {
         rules={[{ required: true, message: 'Please input promo link URL!'}]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item label="Type"
+        name="type"
+        initialValue={(promo_details && promo_details.type) || ""}
+        validateTrigger={["onChange", "onBlur"]}
+        rules={[{ required: true, message: 'Please select type!'}]}
+      >
+        <Select>
+          <Option value="promo">Promo</Option>
+          <Option value="campaign">Campaign</Option>
+        </Select>
       </Form.Item>
     
       <Form.Item label="Show"
