@@ -21,6 +21,10 @@ const routes = [
     component: lazy(() => import("@zeep/modules/Promo/list"))
   },
   {
+    path: "transaction",
+    component: lazy(() => import("@zeep/modules/Transaction/list"))
+  },
+  {
     path: "otp",
     component: lazy(() => import("@zeep/modules/Otp/list"))
   },

@@ -25,6 +25,12 @@ const options = [
 		roles: ["admin","support"],
 	},
 	{
+		key: 'transaction',
+		label: 'Transactions',
+		leftIcon: 'ion-cash',
+		roles: ["admin","support"],
+	},
+	{
 		key: 'otp',
 		label: 'OTP',
 		leftIcon: 'ion-android-textsms',
