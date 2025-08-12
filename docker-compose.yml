@@ -18,5 +18,5 @@ services:
       - "80:80"
     volumes:
       - ./build:/usr/share/nginx/html
-  - ./nginx.conf:/etc/nginx/conf.d/app.conf
+      - ./nginx.conf:/etc/nginx/conf.d/app.conf
     # Serves the built app
