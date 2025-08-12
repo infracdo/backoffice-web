@@ -15,8 +15,14 @@ services:
     depends_on:
       - app
     ports:
-      - "80:80"
+      - "5081:5081"
     volumes:
       - ./build:/usr/share/nginx/html
       - ./nginx.conf:/etc/nginx/conf.d/app.conf
     # Serves the built app
+    networks:
+      - portainer_default
+# Add external network definition
+networks:
+  portainer_default:
+    external: true
