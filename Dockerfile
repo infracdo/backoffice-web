@@ -1,15 +1,15 @@
-# get the base node image
-FROM node:14.18.1
 
-#Create app directory
+# Multi-stage Dockerfile for React app
+FROM node:18 AS build
 WORKDIR /app
-
-RUN npm install serve
-
-#Bundle app source
+COPY package.json package-lock.json ./
+RUN npm install
 COPY . .
+RUN npm run build
 
-# expose the port
-EXPOSE  5552
-
-CMD [ "./node_modules/serve/build/main.js", "-s", "build/", "-p", "5552"]
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/build .
+COPY ./nginx.conf /etc/nginx/conf.d/app.conf
+EXPOSE 5081
+CMD ["nginx", "-g", "daemon off;"]
