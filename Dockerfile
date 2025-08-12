@@ -1,9 +1,11 @@
 
 # Multi-stage Dockerfile for React app
-FROM node:18 AS build
+FROM node:16.20.2 AS build
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json ./
+# Copy package-lock.json if it exists
+COPY package-lock.json* ./
+RUN npm ci --legacy-peer-deps
 COPY . .
 RUN npm run build
 
