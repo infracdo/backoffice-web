@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "5081:5081"
+    networks:
+      - portainer_default
+
+networks:
+  portainer_default:
+    external: true

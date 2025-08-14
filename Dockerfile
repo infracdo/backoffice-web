@@ -1,15 +1,31 @@
-# get the base node image
-FROM node:14.18.1
 
-#Create app directory
+# Multi-stage Dockerfile for React app
+FROM node:16.20.2 AS build
 WORKDIR /app
 
-RUN npm install serve
+# Set build arguments with defaults from .env file
+# These can be overridden at build time with --build-arg
+ARG PORT=5552
+ARG REACT_APP_API_URL=https://zeepbe.rad.coronatel.com/api
+ARG REACT_APP_API_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiemVlcF9pbnRlcm5hbF9rZXkifQ.Frxy0JZU8TejdQBbFSwszcmo7Qm8rtyb6tpdg1bJRTA
 
-#Bundle app source
+# Set environment variables for the build process
+ENV PORT=$PORT
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV REACT_APP_API_TOKEN=$REACT_APP_API_TOKEN
+
+COPY package.json ./
+# Copy package-lock.json if it exists
+COPY package-lock.json* ./
+RUN npm ci --legacy-peer-deps
 COPY . .
 
-# expose the port
-EXPOSE  5552
+# Build the React app with environment variables
+RUN npm run build
 
-CMD [ "./node_modules/serve/build/main.js", "-s", "build/", "-p", "5552"]
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/build .
+COPY ./nginx.conf /etc/nginx/conf.d/app.conf
+EXPOSE 5081
+CMD ["nginx", "-g", "daemon off;"]
