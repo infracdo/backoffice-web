@@ -13,7 +13,7 @@ const table_columns = [
     sortDirections: ["descend", "ascend"],
     render: (record) => { return <p>{formatDate(record.updated_at)}</p> }
   },
-  {
+    {
     title: 'Status',
     key: 'status',
     align: 'center',
@@ -21,6 +21,26 @@ const table_columns = [
     sorter: (a, b) => a.status.localeCompare(b.status),
     sortDirections: ['descend', 'ascend'],
     render:  object => renderCell(object, 'TextCell', 'status')
+  },
+   {
+    title: 'Name',
+    key: 'name',
+    align: 'center',
+    width: 100,
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    sortDirections: ['descend', 'ascend'],
+    render:  object => renderCell(object, 'TextCell', 'name')
+  },
+  {
+    title: 'Amount',
+    key: 'amount',
+    align: 'center',
+    width: 100,
+    sorter: (a, b) => a.amount - b.amount,
+    sortDirections: ['descend', 'ascend'],
+    render:  record => {
+      return <p>{valueType(record.amount,'currency')}</p>
+    }
   },
   {
     title: 'Payment Method',
@@ -31,25 +51,24 @@ const table_columns = [
     sortDirections: ['descend', 'ascend'],
     render:  object => renderCell(object, 'TextCell', 'payment_method')
   },
+  // {
+  //   title: 'Charge Reference',
+  //   key: 'charge_reference',
+  //   align: 'center',
+  //   width: 100,
+  //   sorter: (a, b) => a.charge_reference.localeCompare(b.charge_reference),
+  //   sortDirections: ['descend', 'ascend'],
+  //   render:  object => renderCell(object, 'TextCell', 'charge_reference')
+  // },
   {
-    title: 'Amount',
-    key: 'amount',
+    title: 'Retrieval Reference',
+    key: 'retrieval_reference',
     align: 'center',
     width: 100,
-    sorter: (a, b) => a.amount.localeCompare(b.amount),
+    sorter: (a, b) => (a.retrieval_reference? a.retrieval_reference:'')
+      .localeCompare(b.retrieval_reference? b.retrieval_reference: ''),
     sortDirections: ['descend', 'ascend'],
-    render:  record => {
-      return <p>{valueType(record.amount,'currency')}</p>
-    }
-  },
-  {
-    title: 'Charge Reference',
-    key: 'charge_reference',
-    align: 'center',
-    width: 100,
-    sorter: (a, b) => a.charge_reference.localeCompare(b.charge_reference),
-    sortDirections: ['descend', 'ascend'],
-    render:  object => renderCell(object, 'TextCell', 'charge_reference')
+    render:  object => renderCell(object, 'TextCell', 'retrieval_reference')
   },
 ]
 
