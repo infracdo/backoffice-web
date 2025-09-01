@@ -6,7 +6,7 @@ WORKDIR /app
 # Set build arguments with defaults from .env file
 # These can be overridden at build time with --build-arg
 ARG PORT=5552
-ARG REACT_APP_API_URL=https://zeep-be-sbx.am1-aks.apolloglobal.net/api
+ARG REACT_APP_API_URL=https://backoffice-be-sbx.am1-aks.apolloglobal.net/api
 ARG REACT_APP_API_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiemVlcF9pbnRlcm5hbF9rZXkifQ.Frxy0JZU8TejdQBbFSwszcmo7Qm8rtyb6tpdg1bJRTA
 
 # Set environment variables for the build process
